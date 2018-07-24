@@ -1,0 +1,21 @@
+deployment:
+  service:
+    port: 80
+
+  image:
+    repository: "192.168.99.1:5000/my_app"
+    tag: "v1"
+    pullPolicy: Always
+
+  replicas: 2
+
+statefulSet:
+  service:
+    port: 80
+
+  image:
+    repository: "192.168.99.1:5000/my_app"
+    tag: "v1"
+    pullPolicy: Always
+
+  replicas: 2

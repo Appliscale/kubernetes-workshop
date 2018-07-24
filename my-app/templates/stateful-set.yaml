@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "my-app.fullname" . }}
+  labels:
+    app: {{ template "my-app.name" . }}
+    chart: {{ template "my-app.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.statefulSet.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "my-app.name" . }}-stateful-set
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "my-app.name" . }}-stateful-set
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.statefulSet.image.repository }}:{{ .Values.statefulSet.image.tag }}"
+          imagePullPolicy: {{ .Values.statefulSet.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          env:
+            - name: "POD"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+      volumes:
+        - name: "persistence-layer"
+          persistentVolumeClaim:
+            claimName: {{ template "my-app.fullname" . }}
