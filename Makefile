@@ -5,12 +5,12 @@ build: start-registry build-app-v1
 clean: stop-registry rm-images
 
 build-app-v1:
-	cd docker; docker build --file ./Dockerfile.v1 --tag localhost:5000/my_app .
-	docker push localhost:5000/my_app
+	cd docker; docker build --file ./Dockerfile.v1 --tag localhost:5000/my_app:v1 .
+	docker push localhost:5000/my_app:v1
 
 build-app-v2:
-	cd docker; docker build --file ./Dockerfile.v2 --tag localhost:5000/my_app .
-	docker push localhost:5000/my_app
+	cd docker; docker build --file ./Dockerfile.v2 --tag localhost:5000/my_app:v2 .
+	docker push localhost:5000/my_app:v2
 
 rm-images:
 	docker image rm localhost:5000/my_app
