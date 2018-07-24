@@ -4,22 +4,23 @@ build: start-registry build-app-v1
 
 clean: stop-registry rm-images
 
-build-app-v1:
+build-app-v1: start-registry
 	cd docker; docker build --file ./Dockerfile.v1 --tag localhost:5000/my_app:v1 .
 	docker push localhost:5000/my_app:v1
 
-build-app-v2:
+build-app-v2: start-registry
 	cd docker; docker build --file ./Dockerfile.v2 --tag localhost:5000/my_app:v2 .
 	docker push localhost:5000/my_app:v2
 
 rm-images:
-	docker image rm localhost:5000/my_app
+	[ -z $$(docker images --quiet registry:2) ] || docker rmi registry:2
+	for img in $$(docker images 'localhost:5000/my_app' --format '{{ .ID }}'); do docker rmi $$img; done
 
 start-registry:
-	docker run -d -p 5000:5000 --name registry registry:2
+	[ ! -z $$(docker ps --quiet --filter name=registry) ] || docker run -d -p 5000:5000 --name registry registry:2
 
 stop-registry:
-	docker container stop registry && docker container rm -v registry
+	[ -z $$(docker ps --quiet --filter name=registry) ] || (docker container stop registry && docker container rm -v registry)
 
 start-minikube: CIDR=192.168.99.0/24
 start-minikube:
