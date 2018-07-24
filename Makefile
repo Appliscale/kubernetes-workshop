@@ -1,4 +1,4 @@
-.PHONY: build clean build-app-v1 build-app-v2 rm-images start-registry stop-registry
+.PHONY: build clean build-app-v1 build-app-v2 rm-images start-registry stop-registry start-minikube
 
 build: start-registry build-app-v1
 
@@ -20,3 +20,7 @@ start-registry:
 
 stop-registry:
 	docker container stop registry && docker container rm -v registry
+
+start-minikube: CIDR=192.168.99.0/24
+start-minikube:
+	minikube start --insecure-registry "$(CIDR)"
