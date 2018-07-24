@@ -1,0 +1,3 @@
+FROM nginx:alpine
+
+CMD echo "Hello from ${POD:-no_pod}, v2!" > /usr/share/nginx/html/index.html && exec nginx
