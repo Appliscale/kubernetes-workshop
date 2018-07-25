@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+
+main() {
+  kubectl cp "$1" "$2":/usr/share/nginx/html/
+}
+
+# $1 -> file path
+# $2 -> pod name
+main "$@"

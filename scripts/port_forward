@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+
+main() {
+  kubectl port-forward "$1" "$2"
+}
+
+# $1 -> pod name
+# $2 -> ports spec
+main "$@"
