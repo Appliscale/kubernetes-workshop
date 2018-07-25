@@ -23,6 +23,8 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.statefulSet.image.repository }}:{{ .Values.statefulSet.image.tag }}"
           imagePullPolicy: {{ .Values.statefulSet.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "exec nginx -g 'daemon off;'"]
           ports:
             - name: http
               containerPort: 80
@@ -32,7 +34,15 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-      volumes:
-        - name: "persistence-layer"
-          persistentVolumeClaim:
-            claimName: {{ template "my-app.fullname" . }}
+          volumeMounts:
+            - name: www
+              mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+    - metadata:
+        name: www
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Mi
