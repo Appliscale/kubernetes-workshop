@@ -5,10 +5,10 @@ set -o pipefail
 
 verify_args() {
   if (( $# != 2 )); then
-    echo "copy_image_to_pod"
+    echo "copy_file_to_pod"
     echo ""
     echo "Usage:"
-    echo "  ./copy_image_to_pod <file_path> <pod_name>"
+    echo "  ./copy_file_to_pod <file_path> <pod_name>"
     echo ""
     exit
   fi
