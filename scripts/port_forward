@@ -3,10 +3,20 @@
 set -o errexit
 set -o pipefail
 
+verify_args() {
+  if (( $# != 2 )); then
+    echo "port_forward"
+    echo ""
+    echo "Usage:"
+    echo "  ./port_forward <pod_name> <ports_spec>"
+    echo ""
+    exit
+  fi
+}
+
 main() {
+  verify_args "$@"
   kubectl port-forward "$1" "$2"
 }
 
-# $1 -> pod name
-# $2 -> ports spec
 main "$@"
