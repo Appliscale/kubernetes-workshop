@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+
+verify_args() {
+  if (( $# != 3 )); then
+    echo "set_docker_image"
+    echo ""
+    echo "Usage:"
+    echo "  ./set_docker_image <deployment_name> <docker_register_address> <docker_image_version>"
+    echo ""
+    exit
+  fi
+}
+
+main() {
+  verify_args "$@"
+  kubectl set image deployment/"$1" my-app="$2"/my_app:"$3"
+}
+
+main "$@"
