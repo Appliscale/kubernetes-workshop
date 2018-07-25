@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+
+verify_args() {
+  if (( $# != 2 )); then
+    echo "scale_deployment"
+    echo ""
+    echo "Usage:"
+    echo "  ./scale_deployment <deployment_name> <replicas>"
+    echo ""
+    exit
+  fi
+}
+
+main() {
+  verify_args "$@"
+  kubectl scale deployment "$1" --replicas="$2"
+}
+
+main "$@"
