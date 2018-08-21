@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+
+verify_args() {
+  if (( $# != 2 )); then
+    echo "rollback"
+    echo ""
+    echo "Usage:"
+    echo "  ./rollback <deployment_name> <revision>"
+    echo ""
+    exit
+  fi
+}
+
+main() {
+  verify_args "$@"
+  kubectl rollout undo deployment/"$1" --to-revision="$2"
+}
+
+main "$@"
