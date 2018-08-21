@@ -1,4 +1,4 @@
-.PHONY: build clean build-app-v1 build-app-v2 rm-images start-registry stop-registry start-minikube
+.PHONY: build clean build-app-v1 build-app-v2 rm-images start-registry stop-registry start-minikube, check-dns
 
 build: start-registry build-app-v1
 
@@ -25,3 +25,6 @@ stop-registry:
 start-minikube: CIDR=192.168.99.0/24
 start-minikube:
 	minikube start --insecure-registry "$(CIDR)"
+
+run-container-in-cluster:
+	kubectl run -it --image 'busybox:1.28.4' dns-test --restart=Never --rm --command -- /bin/sh
