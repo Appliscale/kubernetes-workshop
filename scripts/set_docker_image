@@ -8,7 +8,7 @@ verify_args() {
     echo "set_docker_image"
     echo ""
     echo "Usage:"
-    echo "  ./set_docker_image <deployment_name> <docker_register_address> <docker_image_version>"
+    echo "  ./set_docker_image <deployment_name> <docker_registry_address> <docker_image_version>"
     echo ""
     exit
   fi
